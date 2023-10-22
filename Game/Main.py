@@ -2,6 +2,7 @@
 # Main.py: 게임 루프가 구현 되어 있는 메인 프로세스 파일
 # #####
 from pico2d import *
+from background import Background
 import game_world
 
 # ---
@@ -22,12 +23,17 @@ def handle_events():
 # create_world(): 객체와 변수들을 초기화한다.
 # ---
 def create_world():
-    # Init variable
     global running
+    global background
+    global WINDOW_HEIGHT, WINDOW_WIDTH
 
+    # Init variable
     running = True
+    WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 960
 
     # Create Object Here.
+    background = Background()
+    game_world.add_object(background, 0)
 
 # ---
 # update_world(): 게임 월드 내 모든 객체를 업데이트한다.
@@ -40,6 +46,7 @@ def update_world():
 # ---
 def render_world():
     clear_canvas()
+    # 객체 그리기
     game_world.render()
     update_canvas()
 
@@ -48,6 +55,7 @@ def render_world():
 # ---
 open_canvas()
 create_world()
+resize_canvas(1280, 960)
 # game loop
 while running:
     time_started = get_time()
@@ -58,5 +66,5 @@ while running:
     if time_elapsed > 0.01:
         time_elapsed = 0.01
     delay(0.01 - time_elapsed)
-# finalization code
+
 close_canvas()
