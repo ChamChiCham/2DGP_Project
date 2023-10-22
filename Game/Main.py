@@ -3,6 +3,7 @@
 # #####
 from pico2d import *
 from background import Background
+from ball import Ball
 import game_world
 
 # ---
@@ -34,6 +35,16 @@ def create_world():
     # Create Object Here.
     background = Background()
     game_world.add_object(background, 0)
+
+    ball = Ball()
+    game_world.add_object(ball, 1)
+
+    ball = Ball(200, 200, 1)
+    game_world.add_object(ball, 1)
+
+    ball = Ball(300, 300, 2)
+    game_world.add_object(ball, 1)
+
 
 # ---
 # update_world(): 게임 월드 내 모든 객체를 업데이트한다.

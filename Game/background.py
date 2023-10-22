@@ -16,9 +16,11 @@ class Background:
         if self.image_board == None:
             self.image_board = load_image('image_board.png')
 
+    # draw(): 이미지 그리기
     def draw(self):
         self.image_background.draw(1280 // 2, 960 // 2)
         self.image_board.draw(1280 // 2, 960 // 2)
 
+    # update():
     def update(self):
         pass
