@@ -4,6 +4,7 @@
 from pico2d import *
 from background import Background
 from ball import Ball
+from define import *
 import game_world
 
 # ---
@@ -26,13 +27,9 @@ def handle_events():
 def create_world():
     global running
     global background
-    global WINDOW_HEIGHT, WINDOW_WIDTH
-    global WINDOW_FRAME
 
     # Init variable
     running = True
-    WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 960
-    WINDOW_FRAME = 1.0 / 60.0
 
     # Create Object Here.
     background = Background()
@@ -44,7 +41,7 @@ def create_world():
     ball = Ball(0, 0, 1)
     game_world.add_object(ball, 1)
 
-    ball = Ball(800, 400, 2)
+    ball = Ball(BOARD_WIDTH, BOARD_HEIGHT, 2)
     game_world.add_object(ball, 1)
 
 
@@ -68,7 +65,7 @@ def render_world():
 # ---
 open_canvas()
 create_world()
-resize_canvas(1280, 960)
+resize_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
 
 # game loop
 while running:

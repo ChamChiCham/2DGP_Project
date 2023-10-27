@@ -2,6 +2,7 @@
 # ball.py: 당구공이 구현되어 있는 파일.
 # #####
 from pico2d import load_image
+from define import *
 
 class Ball:
 
@@ -16,7 +17,7 @@ class Ball:
     # pos: "Board 위에서의" x, y 위치
     pos_x = pos_y = 0
 
-    def __init__(self, _x = 800 // 2, _y = 400 // 2, _color = 0):
+    def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = 0):
         # 이미지 로드
         if self.image_white_ball == None:
             self.image_white_ball = load_image('image_white_ball.png')
@@ -37,11 +38,11 @@ class Ball:
     # draw(): 이미지 그리기
     def draw(self):
         if self.color == 0:
-            self.image_white_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 18, 18)
+            self.image_white_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, BALL_SIZE, BALL_SIZE)
         elif self.color == 1:
-            self.image_yellow_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 18, 18)
+            self.image_yellow_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, BALL_SIZE, BALL_SIZE)
         elif self.color == 2:
-            self.image_red_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 18, 18)
+            self.image_red_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, BALL_SIZE, BALL_SIZE)
 
     # update():
     def update(self):
