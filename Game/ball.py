@@ -29,17 +29,19 @@ class Ball:
 
         # 상태값 대입
         self.color = _color
+
+        # max size: 800x400
         self.pos_x = _x
         self.pos_y = _y
 
     # draw(): 이미지 그리기
     def draw(self):
         if self.color == 0:
-            self.image_white_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 17, 17)
+            self.image_white_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 18, 18)
         elif self.color == 1:
-            self.image_yellow_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 17, 17)
+            self.image_yellow_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 18, 18)
         elif self.color == 2:
-            self.image_red_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 17, 17)
+            self.image_red_ball.clip_draw(0, 0, 100, 100, 240 + self.pos_x, 280 + self.pos_y, 18, 18)
 
     # update():
     def update(self):

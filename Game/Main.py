@@ -27,10 +27,12 @@ def create_world():
     global running
     global background
     global WINDOW_HEIGHT, WINDOW_WIDTH
+    global WINDOW_FRAME
 
     # Init variable
     running = True
     WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 960
+    WINDOW_FRAME = 1.0 / 60.0
 
     # Create Object Here.
     background = Background()
@@ -39,10 +41,10 @@ def create_world():
     ball = Ball()
     game_world.add_object(ball, 1)
 
-    ball = Ball(200, 200, 1)
+    ball = Ball(0, 0, 1)
     game_world.add_object(ball, 1)
 
-    ball = Ball(300, 300, 2)
+    ball = Ball(800, 400, 2)
     game_world.add_object(ball, 1)
 
 
@@ -67,6 +69,7 @@ def render_world():
 open_canvas()
 create_world()
 resize_canvas(1280, 960)
+
 # game loop
 while running:
     time_started = get_time()
@@ -74,8 +77,8 @@ while running:
     update_world()
     render_world()
     time_elapsed = get_time() - time_started
-    if time_elapsed > 0.01:
-        time_elapsed = 0.01
-    delay(0.01 - time_elapsed)
+    if time_elapsed > WINDOW_FRAME:
+        time_elapsed = WINDOW_FRAME
+    delay(WINDOW_FRAME - time_elapsed)
 
 close_canvas()

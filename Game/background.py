@@ -19,7 +19,7 @@ class Background:
     # draw(): 이미지 그리기
     def draw(self):
         self.image_background.draw(1280 // 2, 960 // 2)
-        self.image_board.draw(1280 // 2, 960 // 2)
+        self.image_board.draw(1280 // 2 + 5, 960 // 2 - 2)
 
     # update():
     def update(self):
