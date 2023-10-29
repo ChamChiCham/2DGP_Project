@@ -39,6 +39,7 @@ def create_world():
     game_world.add_object(ball, 1)
 
     ball = Ball(0, 0, 1)
+    ball.set_value(300, 45)
     game_world.add_object(ball, 1)
 
     ball = Ball(BOARD_WIDTH, BOARD_HEIGHT, 2)
