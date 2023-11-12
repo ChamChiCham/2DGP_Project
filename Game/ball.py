@@ -15,7 +15,7 @@ class Ball:
     color = None
 
     # pos: "Board 위에서의" x, y 위치 / 자료형: float
-    pos_x = pos_y = None
+    x = y = None
 
     # degree: 공이 향하는 방향의 각도 / 단위: (0 - 360)도
     degree = 0
@@ -40,12 +40,12 @@ class Ball:
         self.color = _color
 
         # max size: 800x400
-        self.pos_x = float(_x)
-        self.pos_y = float(_y)
+        self.x = float(_x)
+        self.y = float(_y)
 
     # draw(): 이미지 그리기
     def draw(self):
-        self.image.clip_draw(0, 0, 100, 100, 240 + int(self.pos_x), 280 + int(self.pos_y), BALL_SIZE, BALL_SIZE)
+        self.image.clip_draw(0, 0, 100, 100, 240 + int(self.x), 280 + int(self.y), BALL_SIZE, BALL_SIZE)
 
 
     # update()
@@ -53,12 +53,12 @@ class Ball:
         # 공의 이동
         if self.velocity > 0:
             r = self.velocity * WINDOW_FRAME + 0.5 * pow(WINDOW_FRAME, 2) * BALL_ACCEL
-            self.pos_x += r * math.cos(math.radians(self.degree))
-            self.pos_y += r * math.sin(math.radians(self.degree))
+            self.x += r * math.cos(math.radians(self.degree))
+            self.y += r * math.sin(math.radians(self.degree))
             self.velocity += BALL_ACCEL * WINDOW_FRAME
 
             # 공이 왼쪽 면에 닿았을 때
-            if self.pos_x >= BOARD_WIDTH:
+            if self.x >= BOARD_WIDTH:
                 # 방향 전환
                 if self.degree > 270 and not 90 <= self.degree <= 180:
                     self.degree -= 2 * (self.degree - 270)
@@ -66,7 +66,7 @@ class Ball:
                     self.degree += 2 * (90 - self.degree)
 
             # 공이 오른쪽 면에 닿았을 때
-            elif self.pos_x <= 0 and 90 < self.degree < 270:
+            elif self.x <= 0 and 90 < self.degree < 270:
                 # 방향 전환
                 if self.degree < 180:
                     self.degree -= 2 * (self.degree - 90)
@@ -74,16 +74,23 @@ class Ball:
                     self.degree += 2 * (270 - self.degree)
 
             # 공이 위쪽 면에 닿았을 때
-            elif self.pos_y >= BOARD_HEIGHT and 0 < self.degree < 180:
+            elif self.y >= BOARD_HEIGHT and 0 < self.degree < 180:
                 # 방향 전환
                 self.degree += 2 * (180 - self.degree)
 
             # 공이 아래쪽 면에 닿았을 때
-            elif self.pos_y <= 0 and 180 < self.degree < 360:
+            elif self.y <= 0 and 180 < self.degree < 360:
                 # 방향 전환
                 self.degree += 2 * (180 - self.degree)
 
     def set_value(self, _velocity = 0, _degree = 0):
         self.velocity = _velocity
         self.degree = _degree
+
+    def get_bb(self):
+        return self.x - BALL_SIZE / 2, self.y - BALL_SIZE / 2, self.x + BALL_SIZE / 2, self.y + BALL_SIZE / 2
+
+    def handle_collision(self, group, other):
+        pass
+
 

@@ -38,15 +38,17 @@ def init():
     background = Background()
     game_world.add_object(background, 0)
 
-    ball = Ball()
-    game_world.add_object(ball, 1)
+    ball_red1 = Ball(_color=BALL_COLOR_RED)
+    game_world.add_object(ball_red1, 1)
 
-    ball = Ball(300, 200, 1)
-    ball.set_value(900, 175)
-    game_world.add_object(ball, 1)
+    ball_red2 = Ball(_color=BALL_COLOR_RED)
+    game_world.add_object(ball_red2, 1)
 
-    ball = Ball(BOARD_WIDTH, BOARD_HEIGHT, 2)
-    game_world.add_object(ball, 1)
+    ball_white = Ball(300, 200, BALL_COLOR_WHITE)
+    game_world.add_object(ball_white, 1)
+
+    ball_yellow = Ball(BOARD_WIDTH, BOARD_HEIGHT, BALL_COLOR_YELLOW)
+    game_world.add_object(ball_yellow, 1)
 
     cue = Cue()
     game_world.add_object(cue, 2)
@@ -69,3 +71,4 @@ def pause():
 
 def resume():
     pass
+

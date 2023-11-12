@@ -5,6 +5,8 @@
 # objects: 객체를 저장 / depth = 0 ~ 3
 objects = [[], [], [], []]
 
+collision_pairs = {}
+
 # ---
 # add_object(o, depth): 객체 o를 추가한다.
 # ---
@@ -39,3 +41,32 @@ def remove_object(o):
 def clear():
     for layer in objects:
         layer.clear()
+
+def collide(a, b):
+    la, ba, ra, ta = a.get_bb()
+    lb, bb, rb, tb = b.get_bb()
+
+    if la > rb: return False
+    if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
+
+    return True
+
+# { 'boy:ball' : [[boy], [ball1, ...]]}
+def add_collision_pair(group, a, b):
+    if group not in collision_pairs:
+        print(f"New Group {group} Added")
+        collision_pairs[group] = [[], []]
+    if a: # a가 있을 때, 즉 a가
+        collision_pairs[group][0].append(a)
+    if b:
+        collision_pairs[group][1].append(b)
+
+def handle_collision():
+    for group, pairs in collision_pairs.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                if collide(a, b):
+                    a.handle_collision(group, b)
+                    b.handle_collision(group, a)

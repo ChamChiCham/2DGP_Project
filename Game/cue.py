@@ -1,7 +1,7 @@
 import math
 
 from pico2d import load_image
-from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_r
 
 from define import *
 import game_framework
@@ -22,6 +22,15 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+def space_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
+def space_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
+
+def r_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_r
+
 
 class Ready:
     @staticmethod
@@ -30,6 +39,8 @@ class Ready:
             cue.dir -= 1
         elif left_down(e) or right_up(e):
             cue.dir += 1
+        elif space_down(e):
+            cue.charging = True
         pass
 
     @staticmethod
@@ -42,6 +53,7 @@ class Ready:
         if cue.degree >= 360.0:
             cue.degree -= 360.0
 
+
     @staticmethod
     def draw(cue):
         degree = math.radians(cue.degree)
@@ -50,6 +62,49 @@ class Ready:
                                       cue.y + (CUE_WIDTH // 2 + BALL_SIZE) * math.sin(degree + math.pi))
 
 
+class Wait:
+    @staticmethod
+    def enter(cue, e):
+        print("Wait")
+        pass
+
+    @staticmethod
+    def exit(cue, e):
+        pass
+
+    @staticmethod
+    def do(cue):
+        pass
+
+    @staticmethod
+    def draw(cue):
+        pass
+
+
+class Charge:
+    @staticmethod
+    def enter(cue, e):
+        print("Charge")
+        pass
+
+    @staticmethod
+    def exit(cue, e):
+        pass
+
+    @staticmethod
+    def do(cue):
+        cue.power += 0.1
+        if cue.power > 5.0:
+            cue.power = 0.1
+        pass
+
+    @staticmethod
+    def draw(cue):
+        degree = math.radians(cue.degree)
+        cue.image.clip_composite_draw(0, 0, CUE_WIDTH, CUE_HEIGHT, degree, '',
+                                      cue.x + (CUE_WIDTH // 2 + BALL_SIZE + cue.power * 2) * math.cos(degree + math.pi),
+                                      cue.y + (CUE_WIDTH // 2 + BALL_SIZE + cue.power * 2) * math.sin(degree + math.pi))
+        pass
 
 
 class StateMachine:
@@ -57,7 +112,9 @@ class StateMachine:
         self.cue = cue
         self.cur_state = Ready
         self.transitions = {
-            Ready: {right_down: Ready, left_down: Ready, left_up: Ready, right_up: Ready}
+            Ready: {right_down: Ready, left_down: Ready, left_up: Ready, right_up: Ready, space_down: Charge},
+            Charge: {space_up: Wait},
+            Wait: {r_down: Ready}
         }
 
     def start(self):
@@ -90,6 +147,8 @@ class Cue:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.image = load_image('image_cue.png')
+        self.charging = False
+        self.power = 5.0
         pass
 
     def update(self):
@@ -101,5 +160,9 @@ class Cue:
     def draw(self):
         self.state_machine.draw()
 
-    # def handle_collision(self, group, other):
-    #     pass
+    def get_bb(self):
+        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+
+    def handle_collision(self, group, other):
+        pass
+
