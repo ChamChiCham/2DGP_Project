@@ -88,7 +88,7 @@ class Wait:
         print("Wait")
         for o in game_world.objects[1]:
              if o.color == cue.target_color:
-                 o.velocity = 100 * cue.power
+                 o.velocity = cue.power / 4
                  o.degree = cue.degree
 
         pass
@@ -111,7 +111,7 @@ class Wait:
 class Charge:
     @staticmethod
     def enter(cue, e):
-        print("Charge")
+        cue.power = 1.0
         pass
 
     @staticmethod
@@ -121,8 +121,8 @@ class Charge:
     @staticmethod
     def do(cue):
         cue.power += 0.1
-        if cue.power > 10.0:
-            cue.power = 0.1
+        if cue.power > 20.0:
+            cue.power = 1.0
         pass
 
     @staticmethod

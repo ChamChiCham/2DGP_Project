@@ -4,6 +4,7 @@
 import math
 from pico2d import load_image
 from define import *
+import game_framework
 
 class Ball:
 
@@ -20,7 +21,7 @@ class Ball:
     # degree: 공이 향하는 방향의 각도 / 단위: (0 - 360)도
     degree = 0
 
-    # velocity: px/s
+    # velocity: m/s
     velocity = 0
 
     def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = BALL_COLOR_WHITE):
@@ -49,10 +50,10 @@ class Ball:
     def update(self):
         # 공의 이동
         if self.velocity > 0:
-            r = self.velocity * WINDOW_FRAME + 0.5 * pow(WINDOW_FRAME, 2) * BALL_ACCEL
-            self.x += r * math.cos(math.radians(self.degree))
-            self.y += r * math.sin(math.radians(self.degree))
-            self.velocity += BALL_ACCEL * WINDOW_FRAME
+            r = self.velocity * game_framework.frame_time + 0.5 * pow(game_framework.frame_time, 2) * BALL_ACCEL
+            self.x += r * math.cos(math.radians(self.degree)) * METER_PER_PIXEL
+            self.y += r * math.sin(math.radians(self.degree)) * METER_PER_PIXEL
+            self.velocity += BALL_ACCEL * game_framework.frame_time
 
             # 공이 왼쪽 면에 닿았을 때
             if self.x >= BOARD_WIDTH:
@@ -62,6 +63,8 @@ class Ball:
                 else:
                     self.degree += 2 * (90 - self.degree)
 
+                self.x -= (self.x - BOARD_WIDTH) * 2
+
             # 공이 오른쪽 면에 닿았을 때
             elif self.x <= 0 and 90 < self.degree < 270:
                 # 방향 전환
@@ -70,15 +73,21 @@ class Ball:
                 else:
                     self.degree += 2 * (270 - self.degree)
 
+                self.x = -self.x
+
             # 공이 위쪽 면에 닿았을 때
             elif self.y >= BOARD_HEIGHT and 0 < self.degree < 180:
                 # 방향 전환
                 self.degree += 2 * (180 - self.degree)
 
+                self.y -= (self.y - BOARD_HEIGHT) * 2
+
             # 공이 아래쪽 면에 닿았을 때
             elif self.y <= 0 and 180 < self.degree < 360:
                 # 방향 전환
                 self.degree += 2 * (180 - self.degree)
+
+                self.y = -self.y
 
     def set_value(self, _velocity = 0, _degree = 0):
         self.velocity = _velocity
