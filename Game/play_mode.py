@@ -22,13 +22,15 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        else:
+            cue.handle_event(event)
 
 
 # ---
 # init(): 객체와 변수들을 초기화한다.
 # ---
 def init():
-    global background
+    global cue
 
     # Init variable
 

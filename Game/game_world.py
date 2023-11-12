@@ -35,3 +35,7 @@ def remove_object(o):
         if o in layer:
             layer.remove(o)
             return
+
+def clear():
+    for layer in objects:
+        layer.clear()
