@@ -83,3 +83,4 @@ class Ball:
     def set_value(self, _velocity = 0, _dir = 0):
         self.velocity = _velocity
         self.dir = _dir
+

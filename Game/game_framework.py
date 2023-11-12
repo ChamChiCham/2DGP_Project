@@ -59,11 +59,6 @@ def run(start_mode):
         current_time += frame_time
         # print(f'Frame Time: {frame_time}, Frame Rate: {frame_rate}')
 
-        time_elapsed = get_time() - time_started
-        if time_elapsed > WINDOW_FRAME:
-            time_elapsed = WINDOW_FRAME
-        delay(WINDOW_FRAME - time_elapsed)
-
 
 
     # repeatedly delete the top of the stack

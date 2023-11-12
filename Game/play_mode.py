@@ -4,8 +4,10 @@ from define import *
 import game_framework
 import game_world
 
+
 from ball import Ball
 from background import Background
+from cue import Cue
 
 # ---
 # handle_events(): 이벤트를 받고 각 객체에게 전달한다.
@@ -38,11 +40,14 @@ def init():
     game_world.add_object(ball, 1)
 
     ball = Ball(300, 200, 1)
-    ball.set_value(1000, 65)
+    ball.set_value(900, 175)
     game_world.add_object(ball, 1)
 
     ball = Ball(BOARD_WIDTH, BOARD_HEIGHT, 2)
     game_world.add_object(ball, 1)
+
+    cue = Cue()
+    game_world.add_object(cue, 2)
 
 def finish():
     game_world.clear()

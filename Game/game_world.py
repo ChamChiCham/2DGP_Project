@@ -28,7 +28,7 @@ def render():
             o.draw()
 
 # ---
-# add_object(o): 객체 o를 제거한다.
+# remove_object(o): 객체 o를 제거한다.
 # ---
 def remove_object(o):
     for layer in objects:
