@@ -47,8 +47,15 @@ class Ready:
         elif space_down(e):
             cue.charging = True
         elif r_down(e):
+            # 목표 공의 색 바꾸기
+            if cue.target_color == BALL_COLOR_WHITE:
+                cue.target_color = BALL_COLOR_YELLOW
+            else:
+                cue.target_color = BALL_COLOR_WHITE
+
+            # 목표공의 위치로 큐대 이동
             for o in game_world.objects[1]:
-                 if o.target == True:
+                 if o.color == cue.target_color:
                      cue.x, cue.y = o.x + BOARD_X, o.y + BOARD_Y
 
     @staticmethod
@@ -60,6 +67,8 @@ class Ready:
         cue.degree += 0.5 * cue.dir
         if cue.degree >= 360.0:
             cue.degree -= 360.0
+        if cue.degree < 0.0:
+            cue.degree += 360.0
 
 
     @staticmethod
@@ -78,7 +87,7 @@ class Wait:
     def enter(cue, e):
         print("Wait")
         for o in game_world.objects[1]:
-             if o.target == True:
+             if o.color == cue.target_color:
                  o.velocity = 100 * cue.power
                  o.degree = cue.degree
 
@@ -158,9 +167,12 @@ class StateMachine:
 class Cue:
 
     def __init__(self):
+
+        self.target_color = BALL_COLOR_WHITE
+
         # cue가 가리키는 위치
         for o in game_world.objects[1]:
-             if o.target == True:
+             if o.color == self.target_color:
                  self.x, self.y = o.x + BOARD_X, o.y + BOARD_Y
         # 큐가 돌아가는 방향 설정
         self.dir = 0

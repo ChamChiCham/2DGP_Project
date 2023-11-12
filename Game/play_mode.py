@@ -45,7 +45,7 @@ def init():
     ball_red2 = Ball(_color=BALL_COLOR_RED)
     game_world.add_object(ball_red2, 1)
 
-    ball_white = Ball(300, 200, BALL_COLOR_WHITE, _target=True)
+    ball_white = Ball(300, 200, BALL_COLOR_WHITE)
     game_world.add_object(ball_white, 1)
 
     ball_yellow = Ball(BOARD_WIDTH, BOARD_HEIGHT, BALL_COLOR_YELLOW)

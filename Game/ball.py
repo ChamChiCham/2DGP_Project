@@ -23,10 +23,7 @@ class Ball:
     # velocity: px/s
     velocity = 0
 
-    # 중심이 되는 공
-    target = None
-
-    def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = BALL_COLOR_WHITE, _target = False):
+    def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = BALL_COLOR_WHITE):
         # 이미지 로드
         if self.image == None:
             if _color == BALL_COLOR_WHITE:
@@ -42,8 +39,6 @@ class Ball:
         # max size: 800x400
         self.x = float(_x)
         self.y = float(_y)
-
-        self.target = _target
 
     # draw(): 이미지 그리기
     def draw(self):
