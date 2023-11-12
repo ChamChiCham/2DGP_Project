@@ -31,6 +31,7 @@ def handle_events():
 # ---
 def init():
     global cue
+    global ball_targ
 
     # Init variable
 
@@ -44,11 +45,13 @@ def init():
     ball_red2 = Ball(_color=BALL_COLOR_RED)
     game_world.add_object(ball_red2, 1)
 
-    ball_white = Ball(300, 200, BALL_COLOR_WHITE)
+    ball_white = Ball(300, 200, BALL_COLOR_WHITE, _target=True)
     game_world.add_object(ball_white, 1)
 
     ball_yellow = Ball(BOARD_WIDTH, BOARD_HEIGHT, BALL_COLOR_YELLOW)
     game_world.add_object(ball_yellow, 1)
+
+    ball_targ = ball_white
 
     cue = Cue()
     game_world.add_object(cue, 2)

@@ -5,6 +5,8 @@ from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK
 
 from define import *
 import game_framework
+import game_world
+from ball import Ball
 
 
 def right_down(e):
@@ -32,6 +34,9 @@ def r_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_r
 
 
+# ---
+# Ready: 공을 칠 준비를 하는 상태. 큐대의 방향을 조절한다.
+# ---
 class Ready:
     @staticmethod
     def enter(cue, e):
@@ -41,7 +46,10 @@ class Ready:
             cue.dir += 1
         elif space_down(e):
             cue.charging = True
-        pass
+        elif r_down(e):
+            for o in game_world.objects[1]:
+                 if o.target == True:
+                     cue.x, cue.y = o.x + BOARD_X, o.y + BOARD_Y
 
     @staticmethod
     def exit(cue, e):
@@ -62,10 +70,18 @@ class Ready:
                                       cue.y + (CUE_WIDTH // 2 + BALL_SIZE) * math.sin(degree + math.pi))
 
 
+# ---
+# Wait: 공이 멈추기를 기다리는 상태.
+# ---
 class Wait:
     @staticmethod
     def enter(cue, e):
         print("Wait")
+        for o in game_world.objects[1]:
+             if o.target == True:
+                 o.velocity = 100 * cue.power
+                 o.degree = cue.degree
+
         pass
 
     @staticmethod
@@ -80,7 +96,9 @@ class Wait:
     def draw(cue):
         pass
 
-
+# ---
+# Charge: 큐가 스페이스바를 눌러 충전중인 상태.
+# ---
 class Charge:
     @staticmethod
     def enter(cue, e):
@@ -94,7 +112,7 @@ class Charge:
     @staticmethod
     def do(cue):
         cue.power += 0.1
-        if cue.power > 5.0:
+        if cue.power > 10.0:
             cue.power = 0.1
         pass
 
@@ -141,13 +159,17 @@ class Cue:
 
     def __init__(self):
         # cue가 가리키는 위치
-        self.x, self.y = WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2
+        for o in game_world.objects[1]:
+             if o.target == True:
+                 self.x, self.y = o.x + BOARD_X, o.y + BOARD_Y
+        # 큐가 돌아가는 방향 설정
         self.dir = 0
+
+        # 큐의 방향
         self.degree = 30
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.image = load_image('image_cue.png')
-        self.charging = False
         self.power = 5.0
         pass
 

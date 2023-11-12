@@ -24,9 +24,9 @@ class Ball:
     velocity = 0
 
     # 중심이 되는 공
-    main = None
+    target = None
 
-    def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = BALL_COLOR_WHITE, _main = False):
+    def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = BALL_COLOR_WHITE, _target = False):
         # 이미지 로드
         if self.image == None:
             if _color == BALL_COLOR_WHITE:
@@ -43,9 +43,11 @@ class Ball:
         self.x = float(_x)
         self.y = float(_y)
 
+        self.target = _target
+
     # draw(): 이미지 그리기
     def draw(self):
-        self.image.clip_draw(0, 0, 100, 100, 240 + int(self.x), 280 + int(self.y), BALL_SIZE, BALL_SIZE)
+        self.image.clip_draw(0, 0, 100, 100, BOARD_X + int(self.x), BOARD_Y + int(self.y), BALL_SIZE, BALL_SIZE)
 
 
     # update()
