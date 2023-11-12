@@ -31,7 +31,6 @@ def handle_events():
 # ---
 def init():
     global cue
-    global ball_targ
 
     # Init variable
 
@@ -39,19 +38,15 @@ def init():
     background = Background()
     game_world.add_object(background, 0)
 
-    ball_red1 = Ball(_color=BALL_COLOR_RED)
-    game_world.add_object(ball_red1, 1)
+    balls = []
+    balls.append(Ball(150, 200, BALL_COLOR_RED))
+    balls.append(Ball(550, 200, BALL_COLOR_RED))
+    balls.append(Ball(75, 200, BALL_COLOR_WHITE))
+    balls.append(Ball(550, 230, BALL_COLOR_YELLOW))
 
-    ball_red2 = Ball(_color=BALL_COLOR_RED)
-    game_world.add_object(ball_red2, 1)
-
-    ball_white = Ball(300, 200, BALL_COLOR_WHITE)
-    game_world.add_object(ball_white, 1)
-
-    ball_yellow = Ball(BOARD_WIDTH, BOARD_HEIGHT, BALL_COLOR_YELLOW)
-    game_world.add_object(ball_yellow, 1)
-
-    ball_targ = ball_white
+    for ball in balls:
+        game_world.add_object(ball, 1)
+        game_world.add_collision_pair('ball:ball', ball, ball)
 
     cue = Cue()
     game_world.add_object(cue, 2)
@@ -62,6 +57,7 @@ def finish():
 
 def update():
     game_world.update()
+    game_world.handle_collision()
 
 def draw():
     clear_canvas()

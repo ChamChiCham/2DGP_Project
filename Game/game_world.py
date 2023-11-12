@@ -13,6 +13,9 @@ collision_pairs = {}
 def add_object(o, depth = 0):
     objects[depth].append(o)
 
+def add_objects(ol, depth = 0):
+    objects[depth] += ol
+
 # ---
 # update(): 모든 객체를 업데이트한다.
 # ---
@@ -29,14 +32,21 @@ def render():
         for o in layer:
             o.draw()
 
-# ---
-# remove_object(o): 객체 o를 제거한다.
-# ---
+def remove_collision_object(o):
+    for pairs in collision_pairs.values():
+        if o in pairs[0]:
+            pairs[0].remove(o)
+        if o in pairs[1]:
+            pairs[1].remove(o)
+
 def remove_object(o):
     for layer in objects:
         if o in layer:
-            layer.remove(o)
+            layer.remove(o) # 시각적 월드에서 지운다.
+            remove_collision_object(o) # 충돌 그룹에서 삭제
+            del o
             return
+    raise ValueError('Cannot delete non existing object')
 
 def clear():
     for layer in objects:

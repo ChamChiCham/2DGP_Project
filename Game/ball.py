@@ -2,7 +2,7 @@
 # ball.py: 당구공이 구현되어 있는 파일.
 # #####
 import math
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 from define import *
 import game_framework
 
@@ -44,6 +44,7 @@ class Ball:
     # draw(): 이미지 그리기
     def draw(self):
         self.image.clip_draw(0, 0, 100, 100, BOARD_X + int(self.x), BOARD_Y + int(self.y), BALL_SIZE, BALL_SIZE)
+        # draw_rectangle(*self.get_bb())
 
 
     # update()
@@ -94,9 +95,60 @@ class Ball:
         self.degree = _degree
 
     def get_bb(self):
-        return self.x - BALL_SIZE / 2, self.y - BALL_SIZE / 2, self.x + BALL_SIZE / 2, self.y + BALL_SIZE / 2
+        return (self.x - BALL_SIZE / 2 + BOARD_X, self.y - BALL_SIZE / 2 + BOARD_Y,
+                self.x + BALL_SIZE / 2 + BOARD_X, self.y + BALL_SIZE / 2 + BOARD_Y)
 
     def handle_collision(self, group, other):
+        if group == 'ball:ball' and self != other and self.velocity < other.velocity:
+            # print(f"collision 'ball:ball' {self.color} / {other.color}")
+            if BALL_SIZE * 2 > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
+                self.calc_collision(other)
         pass
+
+    def calc_collision(self, other):
+        # 공이 서로 이동 중일 때는 서로 방향을 바꾼다.
+        dx = self.x - other.x
+        dy = self.y - other.y
+
+        if self.velocity > 0:
+            self.degree = math.degrees(math.atan2(dy, dx))
+            other.degree = math.degrees(math.atan2(-dy, -dx))
+
+        # 한쪽 공만 이동 중일 때
+        else:
+            angle = math.atan2(dy, dx)
+            angle1 = math.radians(other.degree)
+            angle2 = angle + math.pi
+
+            v1i = other.velocity
+            v2i = self.velocity
+
+            other.velocity = (0.8 * (v2i * math.cos(angle2 - angle) - v1i * math.cos(angle1 - angle)) + v1i * math.cos(angle1 - angle) + v1i * math.cos(angle1 - angle)) / 2
+            self.velocity = (0.8 * (v1i * math.cos(angle1 - angle) - v2i * math.cos(angle2 - angle)) + v2i * math.cos(angle2 - angle) + v2i * math.cos(angle2 - angle)) / 2
+
+            other.degree = math.degrees(angle1 + angle)
+            other.degree = math.degrees(angle2 + angle)
+
+            diff = BALL_SIZE * 2 - math.sqrt(dx**2 + dy**2)
+
+            other.x += diff * math.cos(math.radians(other.degree))
+            other.y += diff * math.sin(math.radians(other.degree))
+
+            while other.degree >= 360.0:
+                other.degree -= 360.0
+            while other.degree < 0.0:
+                other.degree += 360.0
+
+            while self.degree >= 360.0:
+                self.degree -= 360.0
+            while self.degree < 0.0:
+                self.degree += 360.0
+
+
+
+
+
+
+
 
 

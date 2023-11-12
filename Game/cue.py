@@ -85,7 +85,6 @@ class Ready:
 class Wait:
     @staticmethod
     def enter(cue, e):
-        print("Wait")
         for o in game_world.objects[1]:
              if o.color == cue.target_color:
                  o.velocity = cue.power / 4
@@ -195,7 +194,7 @@ class Cue:
         self.state_machine.draw()
 
     def get_bb(self):
-        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+        pass
 
     def handle_collision(self, group, other):
         pass
