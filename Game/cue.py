@@ -106,6 +106,7 @@ class Charge:
     @staticmethod
     def enter(cue, e):
         cue.power = 1.0
+        cue.dir = 0
         pass
 
     @staticmethod
