@@ -114,7 +114,40 @@ class Ball:
         pass
 
     def calc_collision(self, other):
+
+        # 각도 저장
+        angle = other.angle
+
         # 뒤로 이동
+        self.calc_collision_move_back(other)
+
+        # 각도 계산
+        self.calc_collision_angle(other)
+
+        # 속도 계산
+        self_angle_diff = self.calc_collision_angle_difference(angle, self.angle)
+        other_angle_diff = self.calc_collision_angle_difference(angle, other.angle)
+
+        if self_angle_diff > math.pi / 2:
+            self_angle_diff = math.pi / 2 - 0.01
+
+        if other_angle_diff > math.pi / 2:
+            other_angle_diff = math.pi / 2 - 0.01
+            
+
+        
+        self.velocity = (1 - (self_angle_diff / (math.pi / 2))) * other.velocity
+        other.velocity *= (1 - (other_angle_diff / (math.pi / 2)))
+
+        print(self.velocity)
+
+        # 앞으로 이동 (중복 충돌 방지)
+        self.x += 0.01 * math.cos(other.angle)
+        self.y += 0.01 * math.sin(other.angle)
+
+
+
+    def calc_collision_move_back(self, other):
         diff_square = (other.x - self.x)**2 + (other.y - self.y)**2
         dist = 1
         if BALL_SIZE**2 - diff_square > 0:
@@ -122,10 +155,18 @@ class Ball:
             other.x += dist * math.cos(other.angle + math.pi)
             other.y += dist * math.sin(other.angle + math.pi)
 
-        # 각도 계산
-        dx = other.x - self.x
-        dy = other.y - self.y
-        angle = math.atan2(dx, dy)
+
+    def calc_collision_angle(self, other):
+        dx = self.x - other.x
+        dy = self.y - other.y
+
+        if dx != 0:
+            angle = math.atan2(dy, dx)
+        else:
+            if dy > 0:
+                angle = 0
+            else:
+                angle = math.pi 
 
         self.angle = angle
 
@@ -137,12 +178,20 @@ class Ball:
             other.angle = angle - math.pi / 2
         else:
             other.angle = angle + math.pi / 2
+    
+    def calc_collision_angle_difference(self, angle1, angle2):
+        angle1 = angle1 % (2 * math.pi)
+        angle2 = angle2 % (2 * math.pi)
 
-        self.velocity = 2
+        diff = abs(angle1 - angle2)
+
+        if diff > math.pi:
+            diff = 2 * math.pi - diff
+
+        return diff
 
 
 
-        pass
 
 
 
