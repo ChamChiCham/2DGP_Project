@@ -64,19 +64,14 @@ class Ready:
 
     @staticmethod
     def do(cue):
-        cue.degree += 0.5 * cue.dir
-        if cue.degree >= 360.0:
-            cue.degree -= 360.0
-        if cue.degree < 0.0:
-            cue.degree += 360.0
+        cue.angle += math.pi / 2 * cue.dir * game_framework.frame_time
 
 
     @staticmethod
     def draw(cue):
-        degree = math.radians(cue.degree)
-        cue.image.clip_composite_draw(0, 0, CUE_WIDTH, CUE_HEIGHT, degree, '',
-                                      cue.x + (CUE_WIDTH // 2 + BALL_SIZE) * math.cos(degree + math.pi),
-                                      cue.y + (CUE_WIDTH // 2 + BALL_SIZE) * math.sin(degree + math.pi))
+        cue.image.clip_composite_draw(0, 0, CUE_WIDTH, CUE_HEIGHT, cue.angle, '',
+                                      cue.x + (CUE_WIDTH // 2 + BALL_SIZE) * math.cos(cue.angle + math.pi),
+                                      cue.y + (CUE_WIDTH // 2 + BALL_SIZE) * math.sin(cue.angle + math.pi))
 
 
 # ---
@@ -88,7 +83,7 @@ class Wait:
         for o in game_world.objects[1]:
              if o.color == cue.target_color:
                  o.velocity = cue.power / 4
-                 o.degree = cue.degree
+                 o.angle = cue.angle
 
         pass
 
@@ -126,10 +121,9 @@ class Charge:
 
     @staticmethod
     def draw(cue):
-        degree = math.radians(cue.degree)
-        cue.image.clip_composite_draw(0, 0, CUE_WIDTH, CUE_HEIGHT, degree, '',
-                                      cue.x + (CUE_WIDTH // 2 + BALL_SIZE + cue.power * 2) * math.cos(degree + math.pi),
-                                      cue.y + (CUE_WIDTH // 2 + BALL_SIZE + cue.power * 2) * math.sin(degree + math.pi))
+        cue.image.clip_composite_draw(0, 0, CUE_WIDTH, CUE_HEIGHT, cue.angle, '',
+                                      cue.x + (CUE_WIDTH // 2 + BALL_SIZE + cue.power * 2) * math.cos(cue.angle + math.pi),
+                                      cue.y + (CUE_WIDTH // 2 + BALL_SIZE + cue.power * 2) * math.sin(cue.angle + math.pi))
         pass
 
 
@@ -177,7 +171,7 @@ class Cue:
         self.dir = 0
 
         # 큐의 방향
-        self.degree = 30
+        self.angle = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.image = load_image('image_cue.png')

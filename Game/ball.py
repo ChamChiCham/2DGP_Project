@@ -18,8 +18,8 @@ class Ball:
     # pos: "Board 위에서의" x, y 위치 / 자료형: float
     x = y = None
 
-    # degree: 공이 향하는 방향의 각도 / 단위: (0 - 360)도
-    degree = 0
+    # degree: 공이 향하는 방향의 각도 / 단위: (0 - 2ㅠ) 라디안
+    angle = 0
 
     # velocity: m/s
     velocity = 0
@@ -52,47 +52,55 @@ class Ball:
         # 공의 이동
         if self.velocity > 0:
             r = self.velocity * game_framework.frame_time + 0.5 * pow(game_framework.frame_time, 2) * BALL_ACCEL
-            self.x += r * math.cos(math.radians(self.degree)) * METER_PER_PIXEL
-            self.y += r * math.sin(math.radians(self.degree)) * METER_PER_PIXEL
+            self.x += r * math.cos(self.angle) * METER_PER_PIXEL
+            self.y += r * math.sin(self.angle) * METER_PER_PIXEL
             self.velocity += BALL_ACCEL * game_framework.frame_time
 
             # 공이 왼쪽 면에 닿았을 때
+            degree = math.degrees(self.angle)
+            while degree < 0:
+                degree += 360
+            while degree > 360:
+                degree -= 360
+
             if self.x >= BOARD_WIDTH:
                 # 방향 전환
-                if self.degree > 270 and not 90 <= self.degree <= 180:
-                    self.degree -= 2 * (self.degree - 270)
+                if degree > 270 and not 90 <= degree <= 180:
+                    degree -= 2 * (degree - 270)
                 else:
-                    self.degree += 2 * (90 - self.degree)
+                    degree += 2 * (90 - degree)
 
                 self.x -= (self.x - BOARD_WIDTH) * 2
 
             # 공이 오른쪽 면에 닿았을 때
-            elif self.x <= 0 and 90 < self.degree < 270:
+            elif self.x <= 0 and 90 < degree < 270:
                 # 방향 전환
-                if self.degree < 180:
-                    self.degree -= 2 * (self.degree - 90)
+                if degree < 180:
+                    degree -= 2 * (degree - 90)
                 else:
-                    self.degree += 2 * (270 - self.degree)
+                    degree += 2 * (270 - degree)
 
                 self.x = -self.x
 
             # 공이 위쪽 면에 닿았을 때
-            elif self.y >= BOARD_HEIGHT and 0 < self.degree < 180:
+            elif self.y >= BOARD_HEIGHT and 0 < degree < 180:
                 # 방향 전환
-                self.degree += 2 * (180 - self.degree)
+                degree += 2 * (180 - degree)
 
                 self.y -= (self.y - BOARD_HEIGHT) * 2
 
             # 공이 아래쪽 면에 닿았을 때
-            elif self.y <= 0 and 180 < self.degree < 360:
+            elif self.y <= 0 and 180 < degree < 360:
                 # 방향 전환
-                self.degree += 2 * (180 - self.degree)
+                degree += 2 * (180 - degree)
 
                 self.y = -self.y
 
-    def set_value(self, _velocity = 0, _degree = 0):
+            self.angle = math.radians(degree)
+
+    def set_value(self, _velocity = 0, _angle = 0):
         self.velocity = _velocity
-        self.degree = _degree
+        self.angle = _angle
 
     def get_bb(self):
         return (self.x - BALL_SIZE / 2 + BOARD_X, self.y - BALL_SIZE / 2 + BOARD_Y,
@@ -107,17 +115,32 @@ class Ball:
 
     def calc_collision(self, other):
         # 공이 서로 이동 중일 때는 서로 방향을 바꾼다.
-        dx = self.x - other.x
-        dy = self.y - other.y
 
         if self.velocity > 0:
-            self.degree = math.degrees(math.atan2(dy, dx))
-            other.degree = math.degrees(math.atan2(-dy, -dx))
+            dx = other.x - self.x
+            dy = other.y - self.y
+            self.angle = math.atan2(dy, dx)
+            other.angle = math.atan2(-dy, -dx)
+
+            diff = BALL_SIZE * 2 - math.sqrt(dx**2 + dy**2)
+            other.x += diff * math.cos(other.angle) * 1.01
+            other.y += diff * math.sin(other.angle) * 1.01
 
         # 한쪽 공만 이동 중일 때
         else:
+            
+            dx = other.x - self.x
+            dy = other.y - self.y
+
+            diff = BALL_SIZE * 2 - math.sqrt(dx**2 + dy**2)
+            other.x -= diff * math.cos(other.angle)
+            other.y -= diff * math.sin(other.angle)
+
+            dx = other.x - self.x
+            dy = other.y - self.y
+        
             angle = math.atan2(dy, dx)
-            angle1 = math.radians(other.degree)
+            angle1 = other.angle
             angle2 = angle + math.pi
 
             v1i = other.velocity
@@ -126,23 +149,11 @@ class Ball:
             other.velocity = (0.8 * (v2i * math.cos(angle2 - angle) - v1i * math.cos(angle1 - angle)) + v1i * math.cos(angle1 - angle) + v1i * math.cos(angle1 - angle)) / 2
             self.velocity = (0.8 * (v1i * math.cos(angle1 - angle) - v2i * math.cos(angle2 - angle)) + v2i * math.cos(angle2 - angle) + v2i * math.cos(angle2 - angle)) / 2
 
-            other.degree = math.degrees(angle1 + angle)
-            other.degree = math.degrees(angle2 + angle)
+            other.angle = angle1 + angle
+            self.angle = angle2 + angle
 
-            diff = BALL_SIZE * 2 - math.sqrt(dx**2 + dy**2)
-
-            other.x += diff * math.cos(math.radians(other.degree))
-            other.y += diff * math.sin(math.radians(other.degree))
-
-            while other.degree >= 360.0:
-                other.degree -= 360.0
-            while other.degree < 0.0:
-                other.degree += 360.0
-
-            while self.degree >= 360.0:
-                self.degree -= 360.0
-            while self.degree < 0.0:
-                self.degree += 360.0
+            other.x += diff * math.cos(other.angle) * 1.01
+            other.y += diff * math.sin(other.angle) * 1.01
 
 
 
