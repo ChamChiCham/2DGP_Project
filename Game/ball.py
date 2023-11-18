@@ -43,7 +43,7 @@ class Ball:
 
     # draw(): 이미지 그리기
     def draw(self):
-        self.image.clip_draw(0, 0, 100, 100, BOARD_X + int(self.x), BOARD_Y + int(self.y), BALL_SIZE, BALL_SIZE)
+        self.image.clip_draw(0, 0, 100, 100, BOARD_X + int(self.x), BOARD_Y + int(self.y), BALL_SIZE + 1, BALL_SIZE + 1)
         # draw_rectangle(*self.get_bb())
 
 
@@ -109,52 +109,40 @@ class Ball:
     def handle_collision(self, group, other):
         if group == 'ball:ball' and self != other and self.velocity < other.velocity:
             # print(f"collision 'ball:ball' {self.color} / {other.color}")
-            if BALL_SIZE * 2 > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
+            if BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
                 self.calc_collision(other)
         pass
 
     def calc_collision(self, other):
-        # 공이 서로 이동 중일 때는 서로 방향을 바꾼다.
+        # 뒤로 이동
+        diff_square = (other.x - self.x)**2 + (other.y - self.y)**2
+        dist = 1
+        if BALL_SIZE**2 - diff_square > 0:
+            dist = math.sqrt(BALL_SIZE**2 - diff_square)
+            other.x += dist * math.cos(other.angle + math.pi)
+            other.y += dist * math.sin(other.angle + math.pi)
 
-        if self.velocity > 0:
-            dx = other.x - self.x
-            dy = other.y - self.y
-            self.angle = math.atan2(dy, dx)
-            other.angle = math.atan2(-dy, -dx)
+        # 각도 계산
+        dx = other.x - self.x
+        dy = other.y - self.y
+        angle = math.atan2(dx, dy)
 
-            diff = BALL_SIZE * 2 - math.sqrt(dx**2 + dy**2)
-            other.x += diff * math.cos(other.angle) * 1.01
-            other.y += diff * math.sin(other.angle) * 1.01
+        self.angle = angle
 
-        # 한쪽 공만 이동 중일 때
+        self.angle = self.angle % (2 * math.pi)
+        other.angle = other.angle % (2 * math.pi)
+
+        angle_diff = self.angle - other.angle
+        if 0 < angle_diff <= math.pi or angle_diff <= 0:
+            other.angle = angle - math.pi / 2
         else:
-            
-            dx = other.x - self.x
-            dy = other.y - self.y
+            other.angle = angle + math.pi / 2
 
-            diff = BALL_SIZE * 2 - math.sqrt(dx**2 + dy**2)
-            other.x -= diff * math.cos(other.angle)
-            other.y -= diff * math.sin(other.angle)
+        self.velocity = 2
 
-            dx = other.x - self.x
-            dy = other.y - self.y
-        
-            angle = math.atan2(dy, dx)
-            angle1 = other.angle
-            angle2 = angle + math.pi
 
-            v1i = other.velocity
-            v2i = self.velocity
 
-            other.velocity = (0.8 * (v2i * math.cos(angle2 - angle) - v1i * math.cos(angle1 - angle)) + v1i * math.cos(angle1 - angle) + v1i * math.cos(angle1 - angle)) / 2
-            self.velocity = (0.8 * (v1i * math.cos(angle1 - angle) - v2i * math.cos(angle2 - angle)) + v2i * math.cos(angle2 - angle) + v2i * math.cos(angle2 - angle)) / 2
-
-            other.angle = angle1 + angle
-            self.angle = angle2 + angle
-
-            other.x += diff * math.cos(other.angle) * 1.01
-            other.y += diff * math.sin(other.angle) * 1.01
-
+        pass
 
 
 
