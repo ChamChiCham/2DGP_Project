@@ -97,6 +97,8 @@ class Ball:
                 self.y = -self.y
 
             self.angle = math.radians(degree)
+        else:
+            self.velocity = 0
 
     def set_value(self, _velocity = 0, _angle = 0):
         self.velocity = _velocity
@@ -115,8 +117,21 @@ class Ball:
 
     def calc_collision(self, other):
 
+        # 벡터를 더하는 과정
+        if self.velocity > 0:
+            vector_self = [self.velocity * math.cos(self.angle), self.velocity * math.sin(self.angle)]
+            vector_other = [other.velocity * math.cos(other.angle), other.velocity * math.sin(other.angle)]
+            vector_new = [vector_self[0] + vector_other[0], vector_self[1] + vector_other[1]]
+            other.velocity = math.sqrt(vector_new[0]**2 + vector_new[1]**2)
+            if vector_new[0] == 0:
+                other.angle = math.pi / 2 if vector_new[1] > 0 else -math.pi / 2
+            else:
+                other.angle = math.atan(vector_new[1] / vector_new[0])
+            self.velocity = 0
+
         # 각도 저장
         angle = other.angle
+        print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}")
 
         # 뒤로 이동
         self.calc_collision_move_back(other)
@@ -127,24 +142,20 @@ class Ball:
         # 속도 계산
         self_angle_diff = self.calc_collision_angle_difference(angle, self.angle)
         other_angle_diff = self.calc_collision_angle_difference(angle, other.angle)
-
-        if self_angle_diff > math.pi / 2:
-            self_angle_diff = math.pi / 2 - 0.01
-
-        if other_angle_diff > math.pi / 2:
-            other_angle_diff = math.pi / 2 - 0.01
             
-
-        
         self.velocity = (1 - (self_angle_diff / (math.pi / 2))) * other.velocity
         other.velocity *= (1 - (other_angle_diff / (math.pi / 2)))
 
-        print(self.velocity)
-
         # 앞으로 이동 (중복 충돌 방지)
-        self.x += 0.01 * math.cos(other.angle)
-        self.y += 0.01 * math.sin(other.angle)
-
+        if self.velocity < other.velocity:
+            while BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
+                other.x += 0.01 * math.cos(other.angle)
+                other.y += 0.01 * math.sin(other.angle)
+        else:
+            while BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
+                self.x += 0.01 * math.cos(self.angle)
+                self.y += 0.01 * math.sin(self.angle)
+        print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}") 
 
 
     def calc_collision_move_back(self, other):

@@ -84,6 +84,7 @@ class Wait:
              if o.color == cue.target_color:
                  o.velocity = cue.power / 4
                  o.angle = cue.angle
+                 print(o.angle)
 
         pass
 
