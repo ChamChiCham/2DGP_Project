@@ -5,6 +5,7 @@ import math
 from pico2d import load_image, draw_rectangle
 from define import *
 import game_framework
+import play_mode
 
 class Ball:
 
@@ -40,6 +41,8 @@ class Ball:
         # max size: 800x400
         self.x = float(_x)
         self.y = float(_y)
+
+        self.collide = False
 
     # draw(): 이미지 그리기
     def draw(self):
@@ -100,10 +103,6 @@ class Ball:
         else:
             self.velocity = 0
 
-    def set_value(self, _velocity = 0, _angle = 0):
-        self.velocity = _velocity
-        self.angle = _angle
-
     def get_bb(self):
         return (self.x - BALL_SIZE / 2 + BOARD_X, self.y - BALL_SIZE / 2 + BOARD_Y,
                 self.x + BALL_SIZE / 2 + BOARD_X, self.y + BALL_SIZE / 2 + BOARD_Y)
@@ -113,6 +112,11 @@ class Ball:
             # print(f"collision 'ball:ball' {self.color} / {other.color}")
             if BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
                 self.calc_collision(other)
+                if self.color == play_mode.cue.target_color and other.color == BALL_COLOR_RED:
+                    other.collide = True
+                elif self.color == BALL_COLOR_RED and other.color == play_mode.cue.target_color:
+                    self.collide = True
+
         pass
 
     def calc_collision(self, other):

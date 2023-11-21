@@ -1,4 +1,6 @@
 from pico2d import *
+
+from Game.player import Player
 from define import *
 
 import game_framework
@@ -31,6 +33,8 @@ def handle_events():
 # ---
 def init():
     global cue
+    global player
+    global balls
 
     # Init variable
 
@@ -50,6 +54,11 @@ def init():
 
     cue = Cue()
     game_world.add_object(cue, 2)
+
+    player = Player(4)
+    game_world.add_object(player,2)
+
+
 
 def finish():
     game_world.clear()

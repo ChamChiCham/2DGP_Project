@@ -6,6 +6,8 @@ from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK
 from define import *
 import game_framework
 import game_world
+import play_mode
+
 from ball import Ball
 
 
@@ -61,6 +63,16 @@ class Ready:
                  if o.color == cue.target_color:
                      cue.x, cue.y = o.x + BOARD_X, o.y + BOARD_Y
 
+            # 만약 공이 충돌하면 충돌상황을 전달
+
+
+            # 공의 충돌상황을 초기화
+            for o in game_world.objects[1]:
+                o.collide = False
+
+            # player에 턴 바꾸기
+            play_mode.player.next_turn()
+
     @staticmethod
     def exit(cue, e):
         pass
@@ -87,7 +99,6 @@ class Wait:
              if o.color == cue.target_color:
                  o.velocity = cue.power / 4
                  o.angle = cue.angle
-                 print(o.angle)
 
         pass
 
@@ -126,8 +137,8 @@ class Charge:
 
     @staticmethod
     def do(cue):
-        cue.power += 0.1
-        if cue.power > 20.0:
+        cue.power += 10 * game_framework.frame_time
+        if cue.power > 21.0:
             cue.power = 1.0
         pass
 
@@ -187,7 +198,7 @@ class Cue:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.image = load_image('image_cue.png')
-        self.power = 5.0
+        self.power = 1.0
         pass
 
     def update(self):
