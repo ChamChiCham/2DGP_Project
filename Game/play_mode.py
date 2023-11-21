@@ -43,7 +43,12 @@ def init():
     game_world.add_object(background, 0)
 
     balls = []
-    balls.append(Ball(150, 200, BALL_COLOR_RED))
+    # balls.append(Ball(150, 200, BALL_COLOR_RED))
+    # balls.append(Ball(550, 200, BALL_COLOR_RED))
+    # balls.append(Ball(75, 200, BALL_COLOR_WHITE))
+    # balls.append(Ball(550, 230, BALL_COLOR_YELLOW))
+
+    balls.append(Ball(520, 200, BALL_COLOR_RED))
     balls.append(Ball(550, 200, BALL_COLOR_RED))
     balls.append(Ball(75, 200, BALL_COLOR_WHITE))
     balls.append(Ball(550, 230, BALL_COLOR_YELLOW))

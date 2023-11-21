@@ -29,3 +29,7 @@ class Player:
         if self.turn == self.count:
             self.turn = 0
 
+    def add_score(self):
+        self.score[self.turn] += 10
+
+

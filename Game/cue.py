@@ -59,12 +59,18 @@ class Ready:
                 cue.target_color = BALL_COLOR_WHITE
 
             # 목표공의 위치로 큐대 이동
-            for o in game_world.objects[1]:
-                 if o.color == cue.target_color:
-                     cue.x, cue.y = o.x + BOARD_X, o.y + BOARD_Y
+            for ball in play_mode.balls:
+                 if ball.color == cue.target_color:
+                     cue.x, cue.y = ball.x + BOARD_X, ball.y + BOARD_Y
 
-            # 만약 공이 충돌하면 충돌상황을 전달
-
+            # 충돌상황에 따라 점수 부여 전달
+            check = True
+            for ball in play_mode.balls:
+                 if ball.color == BALL_COLOR_RED and ball.collide == False:
+                     check = False
+                     break
+            if check:
+                play_mode.player.add_score()
 
             # 공의 충돌상황을 초기화
             for o in game_world.objects[1]:
