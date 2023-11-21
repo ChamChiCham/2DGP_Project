@@ -33,6 +33,9 @@ def space_up(e):
 def r_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_r
 
+def ball_stop(e):
+    return e[0] == 'BALL_STOP'
+
 
 # ---
 # Ready: 공을 칠 준비를 하는 상태. 큐대의 방향을 조절한다.
@@ -46,7 +49,7 @@ class Ready:
             cue.dir += 1
         elif space_down(e):
             cue.charging = True
-        elif r_down(e):
+        elif r_down(e) or ball_stop(e):
             # 목표 공의 색 바꾸기
             if cue.target_color == BALL_COLOR_WHITE:
                 cue.target_color = BALL_COLOR_YELLOW
@@ -94,7 +97,14 @@ class Wait:
 
     @staticmethod
     def do(cue):
-        pass
+        check = True
+        for o in game_world.objects[1]:
+            if o.velocity > 0:
+                check = False
+                break
+        if check:
+            cue.state_machine.handle_event(('BALL_STOP', 0))
+
 
     @staticmethod
     def draw(cue):
@@ -136,7 +146,7 @@ class StateMachine:
         self.transitions = {
             Ready: {right_down: Ready, left_down: Ready, left_up: Ready, right_up: Ready, space_down: Charge},
             Charge: {space_up: Wait},
-            Wait: {r_down: Ready}
+            Wait: {r_down: Ready, ball_stop: Ready}
         }
 
     def start(self):
