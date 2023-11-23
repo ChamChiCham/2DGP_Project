@@ -3,6 +3,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE
 
 import game_world
 import game_framework
+from Game.button import Button
 from background import TitleBackground as Background
 
 
@@ -22,6 +23,9 @@ def handle_events():
 def init():
     background = Background()
     game_world.add_object(background, 0)
+
+    button = Button()
+    game_world.add_object(button, 1)
     pass
 
 
