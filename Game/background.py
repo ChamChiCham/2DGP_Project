@@ -31,10 +31,12 @@ class TitleBackground:
     def __init__(self):
         if self.image_background == None:
             self.image_background = load_image('image_background_title.jpg')
+            self.image_title = load_image('image_title.png')
     pass
 
     def draw(self):
         self.image_background.draw_to_origin(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.image_title.draw(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 200, TITLE_WIDTH, TITLE_HEIGHT)
 
     def update(self):
         pass

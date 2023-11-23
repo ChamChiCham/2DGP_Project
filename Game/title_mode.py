@@ -24,8 +24,14 @@ def init():
     background = Background()
     game_world.add_object(background, 0)
 
-    button = Button()
-    game_world.add_object(button, 1)
+    buttons = []
+    buttons.append(Button(250, 300, 'PLAY'))
+    buttons.append(Button(250, 150, 'QUIT'))
+
+    for button in buttons:
+        game_world.add_object(button, 1)
+
+
     pass
 
 
