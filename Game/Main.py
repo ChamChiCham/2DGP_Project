@@ -5,7 +5,7 @@ from pico2d import *
 from define import *
 
 import game_framework
-import play_mode as start_mode
+import title_mode as start_mode
 
 open_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
 game_framework.run(start_mode)

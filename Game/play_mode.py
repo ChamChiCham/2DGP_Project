@@ -8,7 +8,7 @@ import game_world
 
 
 from ball import Ball
-from background import Background
+from background import PlayBackground as Background
 from cue import Cue
 
 # ---

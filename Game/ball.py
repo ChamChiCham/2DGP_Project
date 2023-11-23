@@ -135,7 +135,7 @@ class Ball:
 
         # 각도 저장
         angle = other.angle
-        # print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}")
+        print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}")
 
         # 뒤로 이동
         self.calc_collision_move_back(other)
@@ -159,7 +159,7 @@ class Ball:
             while BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
                 self.x += 0.01 * math.cos(self.angle)
                 self.y += 0.01 * math.sin(self.angle)
-        # print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}")
+        print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}")
 
 
     def calc_collision_move_back(self, other):

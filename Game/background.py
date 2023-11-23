@@ -2,9 +2,9 @@
 # background.py: 배경 클래스가 구현되어 있는 파일.
 # #####
 from pico2d import load_image
+from define import *
 
-class Background:
-
+class PlayBackground:
     # 이미지 변수
     image_background = None
     image_board = None
@@ -22,5 +22,19 @@ class Background:
         self.image_board.draw(1280 // 2 + 5, 960 // 2 - 2)
 
     # update():
+    def update(self):
+        pass
+
+class TitleBackground:
+    image_background = None
+
+    def __init__(self):
+        if self.image_background == None:
+            self.image_background = load_image('image_background_title.jpg')
+    pass
+
+    def draw(self):
+        self.image_background.draw_to_origin(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+
     def update(self):
         pass
