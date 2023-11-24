@@ -1,7 +1,7 @@
 from pico2d import load_font
 from define import *
 
-
+# class Player는 각각 독립된 객체가 아닌 모든 플레이어 정보를 관리한다.
 class Player:
     def __init__(self, _count = 2):
         self.score = [0, 0, 0, 0]

@@ -6,7 +6,8 @@ from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK
 from define import *
 import game_framework
 import game_world
-import play_mode
+import server
+
 
 from ball import Ball
 
@@ -59,25 +60,25 @@ class Ready:
                 cue.target_color = BALL_COLOR_WHITE
 
             # 목표공의 위치로 큐대 이동
-            for ball in play_mode.balls:
+            for ball in server.balls:
                  if ball.color == cue.target_color:
                      cue.x, cue.y = ball.x + BOARD_X, ball.y + BOARD_Y
 
             # 충돌상황에 따라 점수 부여 전달
             check = True
-            for ball in play_mode.balls:
+            for ball in server.balls:
                  if ball.color == BALL_COLOR_RED and ball.collide == False:
                      check = False
                      break
             if check:
-                play_mode.player.add_score()
+                server.player.add_score()
 
             # 공의 충돌상황을 초기화
             for o in game_world.objects[1]:
                 o.collide = False
 
             # player에 턴 바꾸기
-            play_mode.player.next_turn()
+            server.player.next_turn()
 
     @staticmethod
     def exit(cue, e):
@@ -101,10 +102,10 @@ class Ready:
 class Wait:
     @staticmethod
     def enter(cue, e):
-        for o in game_world.objects[1]:
-             if o.color == cue.target_color:
-                 o.velocity = cue.power / 4
-                 o.angle = cue.angle
+        for ball in server.balls:
+             if ball.color == cue.target_color:
+                 ball.velocity = cue.power / 4
+                 ball.angle = cue.angle
 
         pass
 

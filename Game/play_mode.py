@@ -5,36 +5,27 @@ from define import *
 
 import game_framework
 import game_world
+import title_mode
+import server
 
 
 from ball import Ball
 from background import PlayBackground as Background
 from cue import Cue
 
-# ---
-# handle_events(): 이벤트를 받고 각 객체에게 전달한다.
-# ---
 def handle_events():
-    global running
-
     # Get events
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.change_mode(title_mode)
         else:
-            cue.handle_event(event)
+            server.cue.handle_event(event)
 
 
-# ---
-# init(): 객체와 변수들을 초기화한다.
-# ---
 def init():
-    global cue
-    global player
-    global balls
 
     # Init variable
 
@@ -42,31 +33,31 @@ def init():
     background = Background()
     game_world.add_object(background, 0)
 
-    balls = []
     # balls.append(Ball(150, 200, BALL_COLOR_RED))
     # balls.append(Ball(550, 200, BALL_COLOR_RED))
     # balls.append(Ball(75, 200, BALL_COLOR_WHITE))
     # balls.append(Ball(550, 230, BALL_COLOR_YELLOW))
 
-    balls.append(Ball(520, 200, BALL_COLOR_RED))
-    balls.append(Ball(550, 200, BALL_COLOR_RED))
-    balls.append(Ball(75, 200, BALL_COLOR_WHITE))
-    balls.append(Ball(550, 230, BALL_COLOR_YELLOW))
+    server.balls.append(Ball(520, 200, BALL_COLOR_RED))
+    server.balls.append(Ball(550, 200, BALL_COLOR_RED))
+    server.balls.append(Ball(75, 200, BALL_COLOR_WHITE))
+    server.balls.append(Ball(550, 230, BALL_COLOR_YELLOW))
 
-    for ball in balls:
+    for ball in server.balls:
         game_world.add_object(ball, 1)
         game_world.add_collision_pair('ball:ball', ball, ball)
 
-    cue = Cue()
-    game_world.add_object(cue, 2)
+    server.cue = Cue()
+    game_world.add_object(server.cue, 2)
 
-    player = Player(4)
-    game_world.add_object(player,2)
+    server.player = Player()
+    game_world.add_object(server.player,2)
 
 
 
 def finish():
     game_world.clear()
+    server.clear()
     pass
 
 def update():

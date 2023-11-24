@@ -5,7 +5,7 @@ import math
 from pico2d import load_image, draw_rectangle
 from define import *
 import game_framework
-import play_mode
+import server
 
 class Ball:
 
@@ -59,13 +59,14 @@ class Ball:
             self.y += r * math.sin(self.angle) * METER_PER_PIXEL
             self.velocity += BALL_ACCEL * game_framework.frame_time
 
-            # 공이 왼쪽 면에 닿았을 때
+            # 단위를 라디안에서 도로 변경
             degree = math.degrees(self.angle)
             while degree < 0:
                 degree += 360
             while degree > 360:
                 degree -= 360
 
+            # 공이 왼쪽 면에 닿았을 때
             if self.x >= BOARD_WIDTH:
                 # 방향 전환
                 if degree > 270 and not 90 <= degree <= 180:
@@ -112,9 +113,9 @@ class Ball:
             # print(f"collision 'ball:ball' {self.color} / {other.color}")
             if BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
                 self.calc_collision(other)
-                if self.color == play_mode.cue.target_color and other.color == BALL_COLOR_RED:
+                if self.color == server.cue.target_color and other.color == BALL_COLOR_RED:
                     other.collide = True
-                elif self.color == BALL_COLOR_RED and other.color == play_mode.cue.target_color:
+                elif self.color == BALL_COLOR_RED and other.color == server.cue.target_color:
                     self.collide = True
 
         pass
