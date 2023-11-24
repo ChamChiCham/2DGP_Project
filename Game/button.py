@@ -1,6 +1,7 @@
 from pico2d import load_image, load_font
 from sdl2 import SDL_MOUSEBUTTONDOWN
 
+import game_framework, play_mode
 from define import *
 
 class Button:
@@ -37,5 +38,10 @@ class Button:
 
     # callback function for Button.act
     @staticmethod
-    def act_print():
-        print('print')
+    def act_enter_play_mode():
+        game_framework.change_mode(play_mode)
+
+    @staticmethod
+    def act_quit():
+        game_framework.quit()
+

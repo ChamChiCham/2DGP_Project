@@ -28,8 +28,8 @@ def init():
     game_world.add_object(background, 0)
 
     buttons = []
-    buttons.append(Button(250, 300, 'PLAY', Button.act_print))
-    buttons.append(Button(250, 150, 'QUIT', Button.act_print))
+    buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, 'PLAY', Button.act_enter_play_mode))
+    buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'QUIT', Button.act_quit))
 
     for button in buttons:
         game_world.add_object(button, 1)
