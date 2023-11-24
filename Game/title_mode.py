@@ -1,11 +1,11 @@
 from pico2d import clear_canvas, update_canvas, get_events
-from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE
+from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT
 
 import game_world
 import game_framework
-from Game.button import Button
+from button import Button
 from background import TitleBackground as Background
-
+from define import *
 
 def handle_events():
     # Get events
@@ -16,17 +16,20 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            pass
+            for button in buttons:
+                button.handle_event(event)
+
     pass
 
 
 def init():
+    global buttons
     background = Background()
     game_world.add_object(background, 0)
 
     buttons = []
-    buttons.append(Button(250, 300, 'PLAY'))
-    buttons.append(Button(250, 150, 'QUIT'))
+    buttons.append(Button(250, 300, 'PLAY', Button.act_print))
+    buttons.append(Button(250, 150, 'QUIT', Button.act_print))
 
     for button in buttons:
         game_world.add_object(button, 1)
