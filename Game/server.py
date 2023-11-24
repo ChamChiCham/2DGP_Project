@@ -16,3 +16,4 @@ def clear():
     player = None
 
 # common data
+player_count = None

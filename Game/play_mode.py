@@ -50,7 +50,7 @@ def init():
     server.cue = Cue()
     game_world.add_object(server.cue, 2)
 
-    server.player = Player()
+    server.player = Player(server.player_count)
     game_world.add_object(server.player,2)
 
 

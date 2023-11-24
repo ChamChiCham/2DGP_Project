@@ -7,6 +7,7 @@ from button import Button
 from background import TitleBackground as Background
 from define import *
 import server
+from copy import copy
 
 def handle_events():
     # Get events
@@ -17,25 +18,17 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            for button in server.buttons:
+            for button in copy(server.buttons):
                 button.handle_event(event)
 
     pass
 
 
 def init():
-
     background = Background()
     game_world.add_object(background, 0)
 
-    server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, 'PLAY', Button.act_enter_play_mode))
-    server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'QUIT', Button.act_quit))
-
-    for button in server.buttons:
-        game_world.add_object(button, 1)
-
-
-    pass
+    Button.act_back()
 
 
 def finish():

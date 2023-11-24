@@ -136,7 +136,6 @@ class Ball:
 
         # 각도 저장
         angle = other.angle
-        print(f"{math.degrees(self.angle)}, {math.degrees(other.angle)}, {math.degrees(angle)}")
 
         # 뒤로 이동
         self.calc_collision_move_back(other)
