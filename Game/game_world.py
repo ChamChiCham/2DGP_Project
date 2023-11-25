@@ -49,6 +49,7 @@ def remove_object(o):
     raise ValueError('Cannot delete non existing object')
 
 def clear():
+    collision_pairs.clear()
     for layer in objects:
         layer.clear()
 

@@ -28,7 +28,7 @@ def init():
     background = Background()
     game_world.add_object(background, 0)
 
-    Button.act_back()
+    Button.act_back_to_title()
 
 
 def finish():

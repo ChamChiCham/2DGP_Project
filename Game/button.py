@@ -49,7 +49,7 @@ class Button:
         server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 4, '2 PLAYER', Button.act_set_player, 2))
         server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 3, '3 PLAYER', Button.act_set_player, 3))
         server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, '4 PLAYER', Button.act_set_player, 4))
-        server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'BACK', Button.act_back))
+        server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'BACK', Button.act_back_to_title))
         game_world.add_objects(server.buttons, 1)
 
     @staticmethod
@@ -60,11 +60,22 @@ class Button:
 
 
     @staticmethod
-    def act_back():
+    def act_back_to_title():
         Button.clear_buttons()
         server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, 'PLAY', Button.act_play))
         server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'QUIT', Button.act_quit))
         game_world.add_objects(server.buttons, 1)
+
+    @staticmethod
+    def act_back_to_play():
+        Button.clear_buttons()
+        game_framework.pop_mode()
+
+    @staticmethod
+    def act_title():
+        import title_mode
+        game_framework.pop_mode()
+        game_framework.change_mode(title_mode)
 
     @staticmethod
     def clear_buttons():

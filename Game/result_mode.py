@@ -3,8 +3,10 @@ from pico2d import *
 import game_framework
 import game_world
 import server
+from define import *
 from button import Button
 from copy import copy
+
 
 
 
@@ -19,7 +21,7 @@ def handle_events():
 
 
 def init():
-    server.buttons.append(Button(_str='TEST', _act=Button.act_quit))
+    server.buttons.append(Button(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 4, _str='TITLE', _act=Button.act_title))
     game_world.add_objects(server.buttons, 3)
 
     pass
