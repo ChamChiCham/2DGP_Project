@@ -21,9 +21,10 @@ def handle_events():
 
 
 def init():
+    global text
     server.buttons.append(Button(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 4, _str='TITLE', _act=Button.act_title))
     game_world.add_objects(server.buttons, 3)
-
+    text = load_font('ENCR10B.TTF', TEXT_FONT_SIZE)
     pass
 
 
@@ -34,6 +35,7 @@ def update():
 def draw():
     clear_canvas()
     game_world.render()
+    text.draw(WINDOW_WIDTH // 2 - TEXT_FONT_DIFF * 6, WINDOW_HEIGHT // 4 * 3, "RESULT", (255, 0, 0))
     update_canvas()
 
 
