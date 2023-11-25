@@ -2,7 +2,6 @@ from pico2d import load_image, load_font
 from sdl2 import SDL_MOUSEBUTTONDOWN
 
 import game_framework
-import play_mode
 import game_world
 from define import *
 import server
@@ -56,6 +55,7 @@ class Button:
     @staticmethod
     def act_set_player(_count):
         server.player_count = _count
+        import play_mode
         game_framework.change_mode(play_mode)
 
 

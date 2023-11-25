@@ -63,7 +63,6 @@ def collide(a, b):
 
     return True
 
-# { 'boy:ball' : [[boy], [ball1, ...]]}
 def add_collision_pair(group, a, b):
     if group not in collision_pairs:
         print(f"New Group {group} Added")

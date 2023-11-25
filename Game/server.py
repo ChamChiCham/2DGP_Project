@@ -17,3 +17,4 @@ def clear():
 
 # common data
 player_count = None
+target_score = 10

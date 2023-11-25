@@ -1,6 +1,6 @@
 from pico2d import *
 
-from Game.player import Player
+from player import Player
 from define import *
 
 import game_framework

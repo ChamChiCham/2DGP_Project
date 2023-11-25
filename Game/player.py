@@ -1,5 +1,8 @@
 from pico2d import load_font
 from define import *
+import server
+import game_framework
+import pause_mode
 
 # class Player는 각각 독립된 객체가 아닌 모든 플레이어 정보를 관리한다.
 class Player:
@@ -31,5 +34,7 @@ class Player:
 
     def add_score(self):
         self.score[self.turn] += 10
+        if self.score[self.turn] == server.target_score:
+            game_framework.push_mode(pause_mode)
 
 
