@@ -57,11 +57,11 @@ class Button:
         server.player_count = _count
         Button.clear_buttons()
         server.buttons.append(
-            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 4, '50', Button.act_set_score, 50))
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 4, str(BUTTON_SCORE_FIR), Button.act_set_score, BUTTON_SCORE_FIR))
         server.buttons.append(
-            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 3, '100', Button.act_set_score, 100))
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 3, str(BUTTON_SCORE_SEC), Button.act_set_score, BUTTON_SCORE_SEC))
         server.buttons.append(
-            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, '200', Button.act_set_score, 200))
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, str(BUTTON_SCORE_THI), Button.act_set_score, BUTTON_SCORE_THI))
         server.buttons.append(
             Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'BACK', Button.act_play))
         game_world.add_objects(server.buttons, 1)
