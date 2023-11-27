@@ -55,6 +55,20 @@ class Button:
     @staticmethod
     def act_set_player(_count):
         server.player_count = _count
+        Button.clear_buttons()
+        server.buttons.append(
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 4, '50', Button.act_set_score, 50))
+        server.buttons.append(
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 3, '100', Button.act_set_score, 100))
+        server.buttons.append(
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, '200', Button.act_set_score, 200))
+        server.buttons.append(
+            Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'BACK', Button.act_play))
+        game_world.add_objects(server.buttons, 1)
+
+    @staticmethod
+    def act_set_score(_score):
+        server.target_score = _score
         import play_mode
         game_framework.change_mode(play_mode)
 
