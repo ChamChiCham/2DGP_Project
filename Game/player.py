@@ -1,4 +1,4 @@
-from pico2d import load_font
+from pico2d import load_font, load_image
 from define import *
 import server
 import game_framework
@@ -10,12 +10,16 @@ class Player:
         self.turn = 0
         self.count = _count
         self.font = load_font('ENCR10B.TTF', 30)
+        self.image = []
+        for i in range(_count):
+            self.image.append(load_image('image\\player' + str(i + 1) + '.png'))
         pass
 
     def draw(self):
         for i in range(self.count):
+            self.image[i].draw(WINDOW_WIDTH / 4 * i + WINDOW_WIDTH / 8 - 50, WINDOW_HEIGHT - 100, 100, 150)
             if self.turn == i:
-                self.font.draw(WINDOW_WIDTH / 4 * i + WINDOW_WIDTH / 8 + 50, WINDOW_HEIGHT - 100, f'{self.score[i]}', (0, 0, 255))
+                self.font.draw(WINDOW_WIDTH / 4 * i + WINDOW_WIDTH / 8 + 50, WINDOW_HEIGHT - 100, f'{self.score[i]}', (255, 155, 0))
             else:
                 self.font.draw(WINDOW_WIDTH / 4 * i + WINDOW_WIDTH / 8 + 50, WINDOW_HEIGHT - 100, f'{self.score[i]}', (255, 255, 255))
         pass

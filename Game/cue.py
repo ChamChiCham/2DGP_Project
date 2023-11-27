@@ -204,7 +204,7 @@ class Cue:
         self.angle = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.image = load_image('image_cue.png')
+        self.image = load_image('image\\cue.png')
         self.power = 1.0
         pass
 

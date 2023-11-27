@@ -11,10 +11,10 @@ class PlayBackground:
 
     def __init__(self):
         if self.image_background == None:
-            self.image_background = load_image('image_background_playing.jpg')
+            self.image_background = load_image('image\\background_playing.jpg')
 
         if self.image_board == None:
-            self.image_board = load_image('image_board.png')
+            self.image_board = load_image('image\\board.png')
 
     # draw(): 이미지 그리기
     def draw(self):
@@ -30,8 +30,8 @@ class TitleBackground:
 
     def __init__(self):
         if self.image_background == None:
-            self.image_background = load_image('image_background_title.jpg')
-            self.image_title = load_image('image_title.png')
+            self.image_background = load_image('image\\background_title.jpg')
+            self.image_title = load_image('image\\title.png')
     pass
 
     def draw(self):

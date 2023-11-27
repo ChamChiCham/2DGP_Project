@@ -29,11 +29,11 @@ class Ball:
         # 이미지 로드
         if self.image == None:
             if _color == BALL_COLOR_WHITE:
-                self.image = load_image('image_white_ball.png')
+                self.image = load_image('image\\white_ball.png')
             elif _color == BALL_COLOR_YELLOW:
-                self.image = load_image('image_yellow_ball.png')
+                self.image = load_image('image\\yellow_ball.png')
             elif _color == BALL_COLOR_RED:
-                self.image = load_image('image_red_ball.png')
+                self.image = load_image('image\\red_ball.png')
 
         # 상태값 대입
         self.color = _color

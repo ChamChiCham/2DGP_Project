@@ -11,7 +11,7 @@ class Button:
 
     def __init__(self, _x = 250, _y = 400, _str = 'NONE', _act = None, _arg = None):
         if self.image == None:
-            self.image = load_image('image_button.png')
+            self.image = load_image('image\\button.png')
             self.font = load_font('ENCR10B.TTF', BUTTON_FONT_SIZE)
             self.x = _x
             self.y = _y
@@ -22,7 +22,7 @@ class Button:
 
     def draw(self):
         self.image.draw(self.x, self.y, BUTTON_WIDTH, BUTTON_HEIGHT)
-        self.font.draw(self.x - (len(self.str) * BUTTON_FONT_DIFF), self.y, self.str, (200, 200, 255))
+        self.font.draw(self.x - (len(self.str) * BUTTON_FONT_DIFF), self.y, self.str, (255, 255, 255))
 
     def update(self):
         pass
