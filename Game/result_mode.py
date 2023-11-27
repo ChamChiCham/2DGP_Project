@@ -36,7 +36,7 @@ def draw():
     clear_canvas()
     game_world.render()
     result = "PLAYER " + str(server.player.turn + 1) + " Win!"
-    text.draw(WINDOW_WIDTH // 2 - TEXT_FONT_DIFF * len(result), WINDOW_HEIGHT // 7 * 5, result, (255, 0, 0))
+    text.draw(WINDOW_WIDTH // 2 - TEXT_FONT_DIFF * len(result), WINDOW_HEIGHT // 8 * 5, result, (255, 0, 50))
     update_canvas()
 
 

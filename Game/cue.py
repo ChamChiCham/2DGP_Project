@@ -65,13 +65,14 @@ class Ready:
                      cue.x, cue.y = ball.x + BOARD_X, ball.y + BOARD_Y
 
             # 충돌상황에 따라 점수 부여 전달
-            check = True
+            check = 1
             for ball in server.balls:
                  if ball.color == BALL_COLOR_RED and ball.collide == False:
-                     check = False
-                     break
+                     check -= 1
+                 if ball.color == BALL_COLOR_YELLOW and ball.collide == True:
+                     check = -1
             if check:
-                server.player.add_score()
+                server.player.add_score(check)
 
             # 공의 충돌상황을 초기화
             for o in game_world.objects[1]:

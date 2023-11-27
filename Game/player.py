@@ -35,8 +35,12 @@ class Player:
         if self.turn == self.count:
             self.turn = 0
 
-    def add_score(self):
-        self.score[self.turn] += 10
+    def add_score(self, _value):
+        self.score[self.turn] += 10 * _value
+
+        if self.score[self.turn] < 0:
+            self.score[self.turn] = 0
+
         if self.score[self.turn] == server.target_score:
             import result_mode
             game_framework.push_mode(result_mode)

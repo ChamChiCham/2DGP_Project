@@ -117,8 +117,9 @@ class Ball:
                     other.collide = True
                 elif self.color == BALL_COLOR_RED and other.color == server.cue.target_color:
                     self.collide = True
-
-        pass
+                if ((self.color == BALL_COLOR_WHITE and other.color == BALL_COLOR_YELLOW) or
+                    (self.color == BALL_COLOR_YELLOW and other.color == BALL_COLOR_WHITE)):
+                    self.collide = other.collide = True
 
     def calc_collision(self, other):
 
