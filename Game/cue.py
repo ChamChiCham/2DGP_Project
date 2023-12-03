@@ -1,7 +1,8 @@
 import math
 
 from pico2d import load_image
-from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_r
+from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_r, SDL_MOUSEBUTTONUP, \
+    SDL_MOUSEBUTTONDOWN, SDL_MOUSEMOTION
 
 from define import *
 import game_framework
@@ -36,6 +37,15 @@ def space_up(e):
 def r_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_r
 
+def mouse_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_MOUSEBUTTONUP
+
+def mouse_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_MOUSEBUTTONDOWN
+
+def mouse_move(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_MOUSEMOTION
+
 def ball_stop(e):
     return e[0] == 'BALL_STOP'
 
@@ -52,6 +62,15 @@ class Ready:
             cue.dir += 1
         elif space_down(e):
             cue.charging = True
+        elif mouse_down(e):
+            cue.mouse = True
+            print("Mouse ON")
+        elif mouse_up(e):
+            cue.mouse = False
+            print("Mouse OFF")
+        elif mouse_move(e):
+            if cue.mouse:
+                print(e[1].x, e[1].y)
         elif r_down(e) or ball_stop(e):
             # 목표 공의 색 바꾸기
             if cue.target_color == BALL_COLOR_WHITE:
@@ -163,7 +182,8 @@ class StateMachine:
         self.cue = cue
         self.cur_state = Ready
         self.transitions = {
-            Ready: {right_down: Ready, left_down: Ready, left_up: Ready, right_up: Ready, space_down: Charge},
+            Ready: {right_down: Ready, left_down: Ready, left_up: Ready, right_up: Ready,
+                    space_down: Charge, mouse_down: Ready, mouse_up: Ready, mouse_move: Ready},
             Charge: {space_up: Wait},
             Wait: {r_down: Ready, ball_stop: Ready}
         }
@@ -207,6 +227,7 @@ class Cue:
         self.state_machine.start()
         self.image = load_image('image\\cue.png')
         self.power = 1.0
+        self.mouse = False
         pass
 
     def update(self):
