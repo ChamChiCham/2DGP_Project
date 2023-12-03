@@ -69,6 +69,7 @@ class Ready:
         elif mouse_move(e) and cue.mouse:
             x, y = e[1].x, WINDOW_HEIGHT - 1 - e[1].y
             cue.angle = math.atan2(y - cue.y, x - cue.x)
+            cue.mouse_x, cue.mouse_y = x, y
 
         elif r_down(e) or ball_stop(e):
             # 목표 공의 색 바꾸기
@@ -113,6 +114,8 @@ class Ready:
         cue.image.clip_composite_draw(0, 0, CUE_WIDTH, CUE_HEIGHT, cue.angle, '',
                                       cue.x + (CUE_WIDTH // 2 + BALL_SIZE) * math.cos(cue.angle + math.pi),
                                       cue.y + (CUE_WIDTH // 2 + BALL_SIZE) * math.sin(cue.angle + math.pi))
+        if cue.mouse:
+            cue.image_ball.clip_draw(0, 0, 100, 100, int(cue.mouse_x), int(cue.mouse_y), BALL_SIZE + 1, BALL_SIZE + 1)
 
 
 # ---
@@ -234,7 +237,9 @@ class Cue:
         self.sound_charge.set_volume(32)
         self.sound_hit = load_music("sound\\ball_hit.mp3")
         self.sound_hit.set_volume(32)
-
+        self.image_ball = load_image("image\\mouse_ball.png")
+        self.mouse_x = 0
+        self.mouse_y = 0
         pass
 
     def update(self):
