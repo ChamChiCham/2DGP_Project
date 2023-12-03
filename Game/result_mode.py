@@ -22,6 +22,9 @@ def handle_events():
 
 def init():
     global text
+    music = load_music("game_win.mp3")
+    music.set_volume(32)
+    music.play()
     server.buttons.append(Button(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 4, _str='TITLE', _act=Button.act_title))
     game_world.add_objects(server.buttons, 3)
     text = load_font('ENCR10B.TTF', TEXT_FONT_SIZE)

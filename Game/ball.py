@@ -2,7 +2,7 @@
 # ball.py: 당구공이 구현되어 있는 파일.
 # #####
 import math
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_music
 from define import *
 import game_framework
 import server
@@ -25,6 +25,8 @@ class Ball:
     # velocity: m/s
     velocity = 0
 
+    sound_hit = None
+
     def __init__(self, _x = BOARD_WIDTH // 2, _y = BOARD_HEIGHT // 2, _color = BALL_COLOR_WHITE):
         # 이미지 로드
         if self.image == None:
@@ -43,6 +45,10 @@ class Ball:
         self.y = float(_y)
 
         self.collide = False
+
+        if not self.sound_hit:
+            self.sound_hit = load_music("sound\\ball_hit.mp3")
+            self.sound_hit.set_volume(32)
 
     # draw(): 이미지 그리기
     def draw(self):
@@ -112,6 +118,7 @@ class Ball:
         if group == 'ball:ball' and self != other and self.velocity < other.velocity:
             # print(f"collision 'ball:ball' {self.color} / {other.color}")
             if BALL_SIZE > math.sqrt((other.x - self.x)**2 + (other.y - self.y)**2):
+                self.sound_hit.play()
                 self.calc_collision(other)
                 if self.color == server.cue.target_color and other.color == BALL_COLOR_RED:
                     other.collide = True
