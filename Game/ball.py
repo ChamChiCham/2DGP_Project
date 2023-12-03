@@ -183,13 +183,7 @@ class Ball:
         dx = self.x - other.x
         dy = self.y - other.y
 
-        if dx != 0:
-            angle = math.atan2(dy, dx)
-        else:
-            if dy > 0:
-                angle = 0
-            else:
-                angle = math.pi 
+        angle = math.atan2(dy, dx)
 
         self.angle = angle
 
@@ -197,10 +191,23 @@ class Ball:
         other.angle = other.angle % (2 * math.pi)
 
         angle_diff = self.angle - other.angle
-        if 0 < angle_diff <= math.pi or angle_diff <= 0:
-            other.angle = angle - math.pi / 2
+
+        dir = False
+        if abs(angle_diff) > 3.0 / 2.0 * math.pi:
+            if angle_diff > 0:
+                dir = True
+            else:
+                dir = False
         else:
+            if angle_diff > 0:
+                dir = False
+            else:
+                dir = True
+            pass
+        if dir:
             other.angle = angle + math.pi / 2
+        else:
+            other.angle = angle - math.pi / 2
     
     def calc_collision_angle_difference(self, angle1, angle2):
         angle1 = angle1 % (2 * math.pi)
