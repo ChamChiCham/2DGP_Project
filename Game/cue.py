@@ -64,13 +64,12 @@ class Ready:
             cue.charging = True
         elif mouse_down(e):
             cue.mouse = True
-            print("Mouse ON")
         elif mouse_up(e):
             cue.mouse = False
-            print("Mouse OFF")
-        elif mouse_move(e):
-            if cue.mouse:
-                print(e[1].x, e[1].y)
+        elif mouse_move(e) and cue.mouse:
+            x, y = e[1].x, WINDOW_HEIGHT - 1 - e[1].y
+            cue.angle = math.atan2(y - cue.y, x - cue.x)
+
         elif r_down(e) or ball_stop(e):
             # 목표 공의 색 바꾸기
             if cue.target_color == BALL_COLOR_WHITE:
