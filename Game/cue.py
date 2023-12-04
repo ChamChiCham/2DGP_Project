@@ -72,16 +72,6 @@ class Ready:
             cue.mouse_x, cue.mouse_y = x, y
 
         elif r_down(e) or ball_stop(e):
-            # 목표 공의 색 바꾸기
-            if cue.target_color == BALL_COLOR_WHITE:
-                cue.target_color = BALL_COLOR_YELLOW
-            else:
-                cue.target_color = BALL_COLOR_WHITE
-
-            # 목표공의 위치로 큐대 이동
-            for ball in server.balls:
-                 if ball.color == cue.target_color:
-                     cue.x, cue.y = ball.x + BOARD_X, ball.y + BOARD_Y
 
             # 충돌상황에 따라 점수 부여 전달
             check = 1
@@ -98,7 +88,18 @@ class Ready:
                 o.collide = False
 
             # player에 턴 바꾸기
-            server.player.next_turn()
+            if check != 1:
+                server.player.next_turn()
+                # 목표 공의 색 바꾸기
+                if cue.target_color == BALL_COLOR_WHITE:
+                    cue.target_color = BALL_COLOR_YELLOW
+                else:
+                    cue.target_color = BALL_COLOR_WHITE
+
+            # 목표공의 위치로 큐대 이동
+            for ball in server.balls:
+                if ball.color == cue.target_color:
+                    cue.x, cue.y = ball.x + BOARD_X, ball.y + BOARD_Y
 
     @staticmethod
     def exit(cue, e):
@@ -240,6 +241,7 @@ class Cue:
         self.image_ball = load_image("image\\mouse_ball.png")
         self.mouse_x = 0
         self.mouse_y = 0
+        self.added = False
         pass
 
     def update(self):
