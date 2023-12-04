@@ -1,5 +1,6 @@
-from pico2d import load_image, load_font
-from sdl2 import SDL_MOUSEBUTTONDOWN
+from pico2d import load_image, load_font, load_music
+from sdl2 import SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP
+from sdl2.sdlmixer import music_finished
 
 import game_framework
 import game_world
@@ -8,16 +9,20 @@ import server
 
 class Button:
     image = None
+    sound = None
 
     def __init__(self, _x = 250, _y = 400, _str = 'NONE', _act = None, _arg = None):
         if self.image == None:
             self.image = load_image('image\\button.png')
             self.font = load_font('ENCR10B.TTF', BUTTON_FONT_SIZE)
-            self.x = _x
-            self.y = _y
-            self.str = _str
-            self.act = _act
-            self.arg = _arg
+        self.x = _x
+        self.y = _y
+        self.str = _str
+        self.act = _act
+        self.arg = _arg
+        if not self.sound:
+            self.sound = load_music("sound\\button_blop.mp3")
+            self.sound.set_volume(32)
     pass
 
     def draw(self):
@@ -33,6 +38,11 @@ class Button:
 
     def handle_event(self, event):
         if event.type == SDL_MOUSEBUTTONDOWN:
+            x, y = event.x, WINDOW_HEIGHT - 1 - event.y
+            bb = self.get_bb()
+            if bb[0] <= x <= bb[2] and bb[1] <= y <= bb[3] and self.act != None:
+                self.sound.play()
+        elif event.type == SDL_MOUSEBUTTONUP:
             x, y = event.x, WINDOW_HEIGHT - 1 - event.y
             bb = self.get_bb()
             if bb[0] <= x <= bb[2] and bb[1] <= y <= bb[3] and self.act != None:

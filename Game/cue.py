@@ -235,7 +235,7 @@ class Cue:
         self.mouse = False
         self.sound_charge = load_music("sound\\cue_charge.mp3")
         self.sound_charge.set_volume(32)
-        self.sound_hit = load_music("sound\\ball_hit.mp3")
+        self.sound_hit = load_music("sound\\cue_hit.mp3")
         self.sound_hit.set_volume(32)
         self.image_ball = load_image("image\\mouse_ball.png")
         self.mouse_x = 0
