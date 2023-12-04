@@ -1,4 +1,4 @@
-from pico2d import load_image, load_font, load_music
+from pico2d import load_image, load_font, load_music, load_wav
 from sdl2 import SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP
 from sdl2.sdlmixer import music_finished
 
@@ -21,7 +21,7 @@ class Button:
         self.act = _act
         self.arg = _arg
         if not self.sound:
-            self.sound = load_music("sound\\button_blop.mp3")
+            self.sound = load_wav("sound\\button_blop.mp3")
             self.sound.set_volume(32)
     pass
 
@@ -86,7 +86,9 @@ class Button:
     @staticmethod
     def act_back_to_title():
         Button.clear_buttons()
-        server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, 'PLAY', Button.act_play))
+        server.guide = False
+        server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 3, 'PLAY', Button.act_play))
+        server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 2, 'GUIDE', Button.act_guide))
         server.buttons.append(Button(BUTTON_POSITION_TITLE_X, BUTTON_POSITION_TITLE_Y * 1, 'QUIT', Button.act_quit))
         game_world.add_objects(server.buttons, 1)
 
@@ -106,5 +108,13 @@ class Button:
         for button in server.buttons:
             game_world.remove_object(button)
         server.buttons.clear()
+
+    @staticmethod
+    def act_guide():
+        Button.clear_buttons()
+        server.guide = True
+        server.buttons.append(Button(WINDOW_WIDTH // 2, BUTTON_POSITION_TITLE_Y, 'BACK', Button.act_back_to_title))
+        game_world.add_objects(server.buttons, 1)
+
 
 

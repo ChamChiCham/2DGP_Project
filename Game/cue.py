@@ -1,6 +1,6 @@
 import math
 
-from pico2d import load_image, load_music
+from pico2d import load_image, load_music, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_r, SDL_MOUSEBUTTONUP, \
     SDL_MOUSEBUTTONDOWN, SDL_MOUSEMOTION
 
@@ -124,7 +124,6 @@ class Ready:
 class Wait:
     @staticmethod
     def enter(cue, e):
-        cue.sound_charge.stop()
         cue.sound_hit.play()
         for ball in server.balls:
              if ball.color == cue.target_color:
@@ -160,7 +159,7 @@ class Charge:
     def enter(cue, e):
         cue.power = 1.0
         cue.dir = 0
-        cue.sound_charge.repeat_play()
+        cue.sound_charge.play()
         pass
 
     @staticmethod
@@ -169,8 +168,9 @@ class Charge:
 
     @staticmethod
     def do(cue):
-        cue.power += 10 * game_framework.frame_time
+        cue.power += 20 * game_framework.frame_time
         if cue.power > 21.0:
+            cue.sound_charge.play()
             cue.power = 1.0
         pass
 
@@ -233,9 +233,9 @@ class Cue:
         self.image = load_image('image\\cue.png')
         self.power = 1.0
         self.mouse = False
-        self.sound_charge = load_music("sound\\cue_charge.mp3")
+        self.sound_charge = load_wav("sound\\cue_charge.mp3")
         self.sound_charge.set_volume(32)
-        self.sound_hit = load_music("sound\\cue_hit.mp3")
+        self.sound_hit = load_wav("sound\\cue_hit.mp3")
         self.sound_hit.set_volume(32)
         self.image_ball = load_image("image\\mouse_ball.png")
         self.mouse_x = 0

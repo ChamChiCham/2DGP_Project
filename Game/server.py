@@ -7,6 +7,7 @@ balls = []
 cue = None
 player = None
 winner = None
+guide = False
 
 def clear():
     global buttons, balls, cue, player, winner
@@ -17,6 +18,8 @@ def clear():
     cue = None
     player = None
     winner = None
+    guide = False
+
 
 # common data
 player_count = None

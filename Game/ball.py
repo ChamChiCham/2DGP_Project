@@ -2,7 +2,7 @@
 # ball.py: 당구공이 구현되어 있는 파일.
 # #####
 import math
-from pico2d import load_image, draw_rectangle, load_music
+from pico2d import load_image, draw_rectangle, load_music, load_wav
 from define import *
 import game_framework
 import server
@@ -47,7 +47,7 @@ class Ball:
         self.collide = False
 
         if not self.sound_hit:
-            self.sound_hit = load_music("sound\\ball_hit.mp3")
+            self.sound_hit = load_wav("sound\\ball_hit.mp3")
             self.sound_hit.set_volume(32)
 
     # draw(): 이미지 그리기
