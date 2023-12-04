@@ -43,6 +43,7 @@ class Player:
 
         if self.score[self.turn] == server.target_score:
             import result_mode
+            server.winner = self.turn + 1
             game_framework.push_mode(result_mode)
 
 
