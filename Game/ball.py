@@ -135,11 +135,20 @@ class Ball:
             vector_self = [self.velocity * math.cos(self.angle), self.velocity * math.sin(self.angle)]
             vector_other = [other.velocity * math.cos(other.angle), other.velocity * math.sin(other.angle)]
             vector_new = [vector_self[0] + vector_other[0], vector_self[1] + vector_other[1]]
-            other.velocity = math.sqrt(vector_new[0]**2 + vector_new[1]**2)
+
+            other.velocity = math.sqrt(vector_new[0] ** 2 + vector_new[1] ** 2)
+
             if vector_new[0] == 0:
-                other.angle = math.pi / 2 if vector_new[1] > 0 else -math.pi / 2
+                if vector_new[1] > 0:
+                    other.angle = math.pi / 2
+                elif vector_new[1] < 0:
+                    other.angle = -math.pi / 2
+                else:
+                    # Handle the case where both x and y components are 0
+                    other.angle = 0
             else:
-                other.angle = math.atan(vector_new[1] / vector_new[0])
+                other.angle = math.atan2(vector_new[1], vector_new[0])
+
             self.velocity = 0
 
         # 각도 저장
